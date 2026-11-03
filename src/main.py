@@ -6,7 +6,7 @@ print("\nМатрица:")
 for i in range(1, n+1):
     row = []
     for j in range(1, m+1):
-        x=math.sin(i+j/2)
+        x = math.sin(i+j/2)
         row.append(x)
         if x > 0:
             count += 1
