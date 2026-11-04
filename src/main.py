@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from src.json_exchange import write_message
-from src.matrix_sin import process_request
+from src.integration_runner import run_calculation
 from src.report import format_result_file
 
 
@@ -25,9 +25,9 @@ def main():
 
     try:
         write_message(request_path, {"n": rows, "m": columns})
-        process_request(request_path, result_path)
+        run_calculation(request_path, result_path)
         output = format_result_file(result_path)
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, RuntimeError, TimeoutError) as error:
         print(f"Ошибка обмена данными: {error}")
         return 1
 
