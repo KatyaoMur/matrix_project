@@ -14,3 +14,24 @@ def build_matrix(rows, columns):
 def count_positive(matrix):
     """Подсчитать строго положительные элементы матрицы."""
     return sum(value > 0 for row in matrix for value in row)
+
+
+def process_request(request_path, result_path):
+    """Прочитать задание, выполнить расчёт и сохранить результат."""
+    from src.json_exchange import (
+        read_message,
+        request_dimensions,
+        write_message,
+    )
+
+    payload = read_message(request_path)
+    rows, columns = request_dimensions(payload)
+    matrix = build_matrix(rows, columns)
+
+    write_message(
+        result_path,
+        {
+            "matrix": matrix,
+            "positive_count": count_positive(matrix),
+        },
+    )

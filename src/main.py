@@ -1,7 +1,10 @@
-"""Ввод данных и управление интегрированными модулями."""
+"""Управление модулями с обменом через JSON-файлы."""
 
-from src.matrix_sin import build_matrix, count_positive
-from src.report import format_matrix
+from pathlib import Path
+
+from src.json_exchange import write_message
+from src.matrix_sin import process_request
+from src.report import format_result_file
 
 
 def main():
@@ -16,13 +19,21 @@ def main():
         print("Ошибка: размеры должны быть больше нуля.")
         return 1
 
-    matrix = build_matrix(rows, columns)
-    positive_count = count_positive(matrix)
-    formatted_matrix = format_matrix(matrix)
+    data_dir = Path("data")
+    request_path = data_dir / "request.json"
+    result_path = data_dir / "result.json"
 
-    print("\nМатрица:")
-    print(formatted_matrix)
-    print(f"\nКоличество положительных элементов: {positive_count}")
+    try:
+        write_message(request_path, {"n": rows, "m": columns})
+        process_request(request_path, result_path)
+        output = format_result_file(result_path)
+    except (OSError, ValueError) as error:
+        print(f"Ошибка обмена данными: {error}")
+        return 1
+
+    print(output)
+    print(f"\nФайл задания: {request_path}")
+    print(f"Файл результата: {result_path}")
     return 0
 
 
