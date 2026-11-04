@@ -1,14 +1,30 @@
-import math
-n = int(input("строк:"))
-m = int(input("столбцов:"))
-count = 0
-print("\nМатрица:")
-for i in range(1, n+1):
-    row = []
-    for j in range(1, m+1):
-        x = math.sin(i+j/2)
-        row.append(x)
-        if x > 0:
-            count += 1
-    print([round(x, 2) for x in row])
-print(f"\nКоличество положительных элементов: {count}")
+"""Ввод данных и управление интегрированными модулями."""
+
+from src.matrix_sin import build_matrix, count_positive
+from src.report import format_matrix
+
+
+def main():
+    try:
+        rows = int(input("Количество строк: "))
+        columns = int(input("Количество столбцов: "))
+    except ValueError:
+        print("Ошибка: размеры должны быть целыми числами.")
+        return 1
+
+    if rows <= 0 or columns <= 0:
+        print("Ошибка: размеры должны быть больше нуля.")
+        return 1
+
+    matrix = build_matrix(rows, columns)
+    positive_count = count_positive(matrix)
+    formatted_matrix = format_matrix(matrix)
+
+    print("\nМатрица:")
+    print(formatted_matrix)
+    print(f"\nКоличество положительных элементов: {positive_count}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
